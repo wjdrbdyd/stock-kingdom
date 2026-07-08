@@ -64,8 +64,18 @@ public class KingdomPowerSnapshot extends BaseTimeEntity {
         this.power = power;
     }
 
-    public void assignRank(Integer rank, Integer previousRank) {
+    public static KingdomPowerSnapshot toEntity(Kingdom kingdom, Long totalHoldingQuantity, Integer participantCount, BigDecimal power) {
+        return KingdomPowerSnapshot.builder()
+                .kingdom(kingdom)
+                .snapshotDate(LocalDate.now())
+                .totalHoldingQuantity(totalHoldingQuantity)
+                .participantCount(participantCount)
+                .power(power)
+                .build();
+    }
+
+    public void assignRank(int rank, int previousRank) {
         this.rank = rank;
-        this.rankChange = (previousRank == null) ? 0 : previousRank - rank;
+        this.rankChange = previousRank;
     }
 }

@@ -1,0 +1,20 @@
+## 수동배치
+POST http://localhost:8080/admin/batch/run
+### 시드 데이터 확인 (id 확인용)
+GET http://localhost:8080/kingdoms/ranking
+
+### Holding 생성
+POST http://localhost:8080/holdings
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "stockId": 1,
+  "quantity": 100
+}
+
+### 랭킹 재조회
+GET http://localhost:8080/kingdoms/ranking
+
+### Kingdom 상세조회
+GET http://localhost:8080/kingdoms/1

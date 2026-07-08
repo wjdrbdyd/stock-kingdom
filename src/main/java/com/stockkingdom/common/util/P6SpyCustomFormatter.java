@@ -39,7 +39,7 @@ public class P6SpyCustomFormatter implements MessageFormattingStrategy {
     private String getCallStackInfo() {
         return Arrays.stream(Thread.currentThread().getStackTrace())
                 // ⚠️ 본인의 실제 루트 패키지명(예: com.ktds)으로 변경하세요!
-                .filter(element -> element.getClassName().startsWith("jpa.conversion.jpamgr")
+                .filter(element -> element.getClassName().startsWith("com.stockkingdom")
                         && !element.getClassName().contains("P6Spy")
                         && !element.getClassName().contains("Proxy"))
                 .findFirst()

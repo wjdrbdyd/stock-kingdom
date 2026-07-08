@@ -46,7 +46,7 @@
 ## 전투력 계산 (확정)
 
 - 원 지표: `참여 유저 수 × 유저들의 보유 주식 총합 수 × 현재 주가`
-- **정규화 방식(확정)**: `power = 참여율 × log(참여자 수 + 1)`
+- **정규화 방식(확정)**: `power = 참여율 × log(참여자 수 + 1) x 1000000`
   - 참여율 = `(유저 보유 주식 총합 × 현재가) / 종목 시가총액`
   - 이유: 회사 규모(시가총액)를 분모로 제거해 대형주가 항상 이기는 문제를 해결하고,
     log(참여자 수)로 소수 유저 몰빵 왜곡을 방지 — "결속력" 목표와 부합
@@ -54,8 +54,7 @@
     다시 필요해짐 — Stock.java, V1__init.sql 둘 다 수정 필요)
 - 실시간 반영 vs 배치(일 1회): 아직 최종 결정 안 함. 현재는 배치로 가정하고
   구현 중이나, 실시간 필요 여부는 보류 상태
-- `KingdomPowerCalculator` 클래스에 `UnsupportedOperationException`을 던지는
-  스텁만 있음 — 위 공식으로 구현 필요 (다음 작업)
+- `KingdomPowerCalculator` 클래스에 지표 구현 완료
 
 ## 기술 스택
 
@@ -71,13 +70,13 @@
 - [x] Spring 프로젝트 뼈대 생성 (엔티티, Repository, Flyway 마이그레이션)
 - [x] 전투력 정규화 방식 결정 (참여율 × log(참여자 수+1) 확정)
 - [x] Stock 엔티티에 marketCap 필드 재추가 (Stock.java, V1__init.sql)
-- [ ] Git 저장소 초기화 (git init + 첫 커밋) — 아직 안 함, 다음에 할 것
-- [ ] `KingdomPowerCalculator` 구현
-- [ ] 종목 목업 데이터 시드 (시가총액 상위 20개 정도)
-- [ ] QueryDSL Custom Repository (종목별 보유 합계 집계 등)
-- [ ] 배치 스케줄러 구현
-- [ ] Controller/API 계층 구현
-- [ ] 설계 결정 문서화 (별도 `docs/decisions/` 에 ADR 형식으로 남기기 — 특히
+- [x] Git 저장소 초기화 (git init + 첫 커밋) 
+- [x] `KingdomPowerCalculator` 구현
+- [x] 종목 목업 데이터 시드 (시가총액 상위 20개 정도)
+- [x] QueryDSL Custom Repository (종목별 보유 합계 집계 등)
+- [x] 배치 스케줄러 구현
+- [x] Controller/API 계층 구현
+- [x] 설계 결정 문서화 (별도 `docs/decisions/` 에 ADR 형식으로 남기기 — 특히
       Kingdom/Stock 분리, Snapshot/Ranking 병합 건은 좋은 면접 소재이므로 꼭 기록)
 
 ## 코딩 스타일 / 주의사항

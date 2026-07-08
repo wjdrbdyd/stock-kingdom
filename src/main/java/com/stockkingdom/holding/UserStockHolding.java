@@ -40,6 +40,14 @@ public class UserStockHolding extends BaseTimeEntity {
         this.quantity = quantity;
     }
 
+    public static UserStockHolding from(User user, Stock stock, Long quantity) {
+        return UserStockHolding.builder()
+                .user(user)
+                .stock(stock)
+                .quantity(quantity)
+                .build();
+    }
+
     public void updateQuantity(Long quantity) {
         this.quantity = quantity;
     }
