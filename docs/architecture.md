@@ -58,6 +58,14 @@ power = 참여율 × log(참여자수 + 1) × 1,000,000
 | 상용(기본) | 매일 자정 1회 | `application.yml` |
 | `dev` | 2초마다 (빠른 동작 확인용) | `application-dev.yml` |
 
+## 시드 데이터와 시퀀스
+
+`V2__seed_mock_data.sql`은 종목/왕국/유저 등을 명시적 PK로 삽입한다. PostgreSQL의
+`BIGSERIAL` 시퀀스는 명시적 insert로는 자동 갱신되지 않으므로, 시드 이후 신규
+insert 시 시드 데이터와 PK가 충돌할 수 있다. `V3__fix_sequences_after_seed.sql`에서
+`setval`로 각 테이블 시퀀스를 시드 데이터의 max(id) 기준으로 재설정해 해결했다.
+(Flyway 적용 파일은 수정하지 않는다는 원칙에 따라 V2를 고치는 대신 V3를 추가함.)
+
 ## 알려진 한계 (Prototype/MVP 단계)
 
 - 인증/인가 없음 — `userId`를 요청 바디로 직접 받음

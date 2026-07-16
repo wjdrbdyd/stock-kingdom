@@ -36,8 +36,8 @@ class KingdomPowerBatchServiceTest {
 
     @Test
     void 어제보다_순위가_오르면_rankChange가_양수다() {
-        Kingdom risingKingdom = createKingdom("005930", "삼성전자");
-        Kingdom fallingKingdom = createKingdom("000660", "SK하이닉스");
+        Kingdom risingKingdom = createKingdom("TEST-001", "테스트종목1");
+        Kingdom fallingKingdom = createKingdom("TEST-002", "테스트종목2");
 
         // 어제: risingKingdom 2등, fallingKingdom 1등
         saveSnapshot(risingKingdom, LocalDate.now().minusDays(1), BigDecimal.valueOf(10), 2, null);
@@ -61,18 +61,27 @@ class KingdomPowerBatchServiceTest {
 
     @Test
     void 재실행해도_오늘_스냅샷은_왕국당_1건만_남는다() throws Exception {
-        Kingdom kingdom = createKingdom("005930", "삼성전자");
-        User user = userRepository.save(User.builder().nickname("tester").email("tester@test.com").build());
+        Kingdom kingdom = createKingdom("TEST-003", "테스트종목3");
+        User user = userRepository.save(User.builder().nickname("tester").email("tester-" + System.nanoTime() + "@test.com").build());
         userStockHoldingRepository.save(UserStockHolding.from(user, kingdom.getStock(), 10L));
 
         kingdomPowerBatchService.calculateAndSaveSnapshots();
-        long firstRunCount = kingdomPowerSnapshotRepository.findBySnapshotDate(LocalDate.now()).size();
+        long firstRunTotal = kingdomPowerSnapshotRepository.findBySnapshotDate(LocalDate.now()).size();
+        long firstRunForKingdom = countSnapshotsForKingdom(kingdom);
 
         kingdomPowerBatchService.calculateAndSaveSnapshots();
-        long secondRunCount = kingdomPowerSnapshotRepository.findBySnapshotDate(LocalDate.now()).size();
+        long secondRunTotal = kingdomPowerSnapshotRepository.findBySnapshotDate(LocalDate.now()).size();
+        long secondRunForKingdom = countSnapshotsForKingdom(kingdom);
 
-        assertThat(firstRunCount).isEqualTo(1);
-        assertThat(secondRunCount).isEqualTo(firstRunCount);
+        assertThat(firstRunForKingdom).isEqualTo(1);
+        assertThat(secondRunForKingdom).isEqualTo(1);
+        assertThat(secondRunTotal).isEqualTo(firstRunTotal);
+    }
+
+    private long countSnapshotsForKingdom(Kingdom kingdom) {
+        return kingdomPowerSnapshotRepository.findBySnapshotDate(LocalDate.now()).stream()
+                .filter(s -> s.getKingdom().getId().equals(kingdom.getId()))
+                .count();
     }
 
     private Kingdom createKingdom(String ticker, String companyName) {

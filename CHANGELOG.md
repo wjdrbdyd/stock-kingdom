@@ -14,6 +14,11 @@
     (지연 프록시(`getReferenceById`) 대신 `findById().orElseThrow` 사용)
   - `GlobalExceptionHandler` 추가: `EntityNotFoundException` → 404,
     `IllegalArgumentException` → 400
+- `V2__seed_mock_data.sql`이 명시적 PK로 시드 데이터를 삽입하면서
+  `stock`/`kingdom`/`users`/`user_stock_holding`/`kingdom_power_snapshot`의
+  시퀀스를 갱신하지 않아, 이후 신규 insert 시 PK 충돌이 발생하던 문제.
+  Flyway 적용 파일은 수정 불가하므로 `V3__fix_sequences_after_seed.sql`을
+  추가해 각 시퀀스를 현재 max(id) 기준으로 재설정.
 
 ### Changed
 - 배치 스케줄 주기를 `batch.kingdom-power.cron` 프로퍼티로 외부화
@@ -29,3 +34,8 @@
 - `docs/architecture.md`: 지원자 대상 설계 개요 문서 (기존 CLAUDE.md는
   AI 작업 컨텍스트 전용으로 유지, README에서는 이 문서로 링크)
 - README에 Prototype/MVP 상태 배너 및 알려진 한계 안내 추가
+
+### Verified
+- 실제 PostgreSQL에 연결해 통합 테스트 전체(8개) 통과 확인.
+  과정에서 위 시퀀스 버그를 발견해 함께 수정했고, 테스트가 시드 데이터의
+  ticker/email과 충돌하지 않도록 테스트 전용 값으로 교체.

@@ -34,17 +34,17 @@ class UserStockHoldingQueryRepositoryTest {
     @Test
     void 종목별_보유수량과_참여자수를_집계한다() {
         Stock stock = stockRepository.save(Stock.builder()
-                .ticker("005930")
-                .companyName("삼성전자")
+                .ticker("TEST-101")
+                .companyName("테스트종목")
                 .currentPrice(BigDecimal.valueOf(70_000))
                 .marketCap(BigDecimal.valueOf(1_000_000_000))
                 .build());
         Kingdom kingdom = kingdomRepository.save(Kingdom.builder()
                 .stock(stock)
-                .name("삼성전자 왕국")
+                .name("테스트 왕국")
                 .build());
-        User user1 = userRepository.save(User.builder().nickname("user1").email("user1@test.com").build());
-        User user2 = userRepository.save(User.builder().nickname("user2").email("user2@test.com").build());
+        User user1 = userRepository.save(User.builder().nickname("user1").email("user1-" + System.nanoTime() + "@test.com").build());
+        User user2 = userRepository.save(User.builder().nickname("user2").email("user2-" + System.nanoTime() + "@test.com").build());
         userStockHoldingRepository.save(UserStockHolding.from(user1, stock, 10L));
         userStockHoldingRepository.save(UserStockHolding.from(user2, stock, 20L));
 
