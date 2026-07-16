@@ -1,5 +1,9 @@
 # 주식왕국 전쟁 서비스
 
+> **Status: Prototype / MVP** — 개인 포트폴리오 목적의 초기 단계 프로젝트입니다.
+> 인증/권한, 입력 검증, 실전 배치 운영 등 상용 서비스 수준의 완성도는 아직
+> 갖추지 않았습니다. 설계 배경과 알려진 한계는 [docs/architecture.md](docs/architecture.md) 참고.
+
 같은 종목을 보유한 주주들이 **왕국** 단위로 묶여 경쟁하는 게이미피케이션 서비스.
 
 개인 투자자들이 왕국 단위로 결속해 대주주에 준하는 영향력을 갖는 것을 목표로 한다.
@@ -54,7 +58,7 @@ power = 참여율 × log(참여자수 + 1) × 1,000,000
 | Backend | Spring Boot, Spring Data JPA, QueryDSL |
 | DB | PostgreSQL |
 | 마이그레이션 | Flyway (`ddl-auto: validate`) |
-| 배치 | Spring `@Scheduled` (일 1회 전투력 재계산) |
+| 배치 | Spring `@Scheduled` (상용: 일 1회, 개발(`dev` 프로필): 2초마다) |
 
 ---
 
@@ -134,17 +138,22 @@ GET /kingdoms/{kingdomId}
 테이블은 Flyway가 최초 실행 시 자동 생성한다.
 
 **목업 데이터**
-`src/main/resources/db/migration/V2__seed.sql` — 시가총액 상위 종목 및 샘플 보유 데이터 포함
+`src/main/resources/db/migration/V2__seed_mock_data.sql` — 시가총액 상위 종목 및 샘플 보유 데이터 포함
 
 **전투력 배치 수동 실행**
 ```
-POST /admin/batch/power
+POST /admin/batch/run
 ```
-(배치는 매일 자정 자동 실행, 위 엔드포인트로 수동 트리거 가능)
+(상용 기본값은 매일 자정 자동 실행. 개발 중 빠르게 확인하려면
+`-Dspring.profiles.active=dev`로 실행 시 2초마다 자동 실행되며,
+위 엔드포인트로 수동 트리거도 가능. 주기는 `batch.kingdom-power.cron`
+프로퍼티로 프로필별 설정)
 
 ---
 
 ## 설계 결정 문서 (ADR)
+
+전체 아키텍처 개요는 [docs/architecture.md](docs/architecture.md) 참고.
 
 | ADR | 제목 |
 |---|---|

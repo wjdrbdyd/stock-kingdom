@@ -49,10 +49,10 @@ public class KingdomPowerBatchService {
         LocalDate yesterday = today.minusDays(1);
         // 1. 오늘 날짜 스냅샷 전체 조회  power 기준 내림차순
         List<KingdomPowerSnapshot> todaySnapshots = kingdomPowerSnapshotRepository.findBySnapshotDateOrderByPowerDesc(today);
-        Map<Kingdom, Integer> yesterdayRankMap = kingdomPowerSnapshotRepository
+        Map<Long, Integer> yesterdayRankMap = kingdomPowerSnapshotRepository
                 .findBySnapshotDate(yesterday)
                 .stream()
-                .collect(toMap(s -> s.getKingdom(), KingdomPowerSnapshot::getRank));
+                .collect(toMap(s -> s.getKingdom().getId(), KingdomPowerSnapshot::getRank));
         // 2.  power 기준 정렬 → rank 부여
         for(int i = 0; i < todaySnapshots.size(); i++) {
             int todayRank = i+1;

@@ -16,7 +16,7 @@ public class KingdomPowerBatchScheduler {
 5. 전체 저장 끝난 후, power 기준 정렬 → rank 매기기
 6. 어제 스냅샷과 비교해서 rank_change 계산
      */
-    @Scheduled(cron= "2 * * * * *")
+    @Scheduled(cron = "${batch.kingdom-power.cron}")
     public void runDailyBatch() throws Exception{
         kingdomPowerBatchService.calculateAndSaveSnapshots();
         kingdomPowerBatchService.calculateRanks();

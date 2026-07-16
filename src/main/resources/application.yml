@@ -37,3 +37,7 @@ decorator:
 logging:
   level:
     org.hibernate.SQL: debug
+
+batch:
+  kingdom-power:
+    cron: "0 0 0 * * *"   # 상용: 매일 자정 1회
