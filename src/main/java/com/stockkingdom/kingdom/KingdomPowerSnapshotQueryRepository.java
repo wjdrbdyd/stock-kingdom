@@ -35,7 +35,7 @@ public class KingdomPowerSnapshotQueryRepository {
                 .join(kingdomPowerSnapshot.kingdom, kingdom)
                 .join(kingdom.stock, stock)
                 .where(kingdomPowerSnapshot.snapshotDate.eq(now))
-                .orderBy(kingdomPowerSnapshot.power.asc())
+                .orderBy(kingdomPowerSnapshot.rank.asc())
                 .fetch();
 
     }
