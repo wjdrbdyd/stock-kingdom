@@ -24,6 +24,8 @@
 - `KingdomPowerCalculatorTest`: 전투력 계산 공식 및 예외 케이스에 대한 assertion 기반 유닛 테스트
 - `KingdomPowerBatchServiceTest`: 순위 역전 시 `rankChange` 부호 검증,
   배치 재실행 시 스냅샷 멱등성(왕국당 1건 유지) 검증
+- `UserStockHoldingQueryRepositoryTest`: 기존에 assertion 없이 결과만 출력하던
+  테스트를 실제 검증(보유수량 합계, 참여자수, kingdomId 매핑)이 있는 테스트로 재작성
 - `docs/architecture.md`: 지원자 대상 설계 개요 문서 (기존 CLAUDE.md는
   AI 작업 컨텍스트 전용으로 유지, README에서는 이 문서로 링크)
 - README에 Prototype/MVP 상태 배너 및 알려진 한계 안내 추가
